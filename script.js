@@ -43,3 +43,34 @@ function render() {
     list.replaceChildren(...items.map(createTodoElement));
 }
 render();
+function addTodo(text, hours) {
+	  todos.push({
+		id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
+		text,
+		hours,
+		completed: false,
+	  });
+	  
+	  render();
+}
+
+
+function parseHours(value) {
+	  const parsed = parseFloat(value);
+	  return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
+}
+
+const form = document.getElementById("todo-form");
+const input = document.getElementById("todo-input");
+const hoursInput = document.getElementById("hours-input");
+
+form.addEventListener("submit", (e) => {
+	  e.preventDefault();
+	  const text = input.value.trim();
+	  const hours = parseHours(hoursInput.value);
+	  if (!text) return;
+	  addTodo(text, hours);
+	  input.value = "";
+	  hoursInput.value = "0";
+	  input.focus();
+});
